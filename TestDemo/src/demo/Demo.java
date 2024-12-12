@@ -106,12 +106,25 @@ public class Demo {
 		// TODO Auto-generated method stub
 		if(filter.equals("active")) {
 		 element = driver.findElement(By.xpath(filterActive));
+		 element.click();
+		 for(int i = 0; i < 2; i++) {
+		        WebElement elementText = driver.findElement(By.xpath(checkBoxtextXpath.replaceAll("1", Integer.toString(i+1))));
+				Assert.assertEquals(elementText.getText(), items.get(i+2));
+		     }
+		 
 		} else if(filter.equals("completed")){
 	     element = driver.findElement(By.xpath(filterCompleted));
+		 element.click();
+	     for(int i = 0; i < 2; i++) {
+	        WebElement elementText = driver.findElement(By.xpath(checkBoxtextXpath.replaceAll("1", Integer.toString(i+1))));
+			Assert.assertEquals(elementText.getText(), items.get(i));
+			Assert.assertEquals(elementText.getCssValue("text-decoration-line") , "line-through");
+	     }
+
 		} else {
 			Assert.fail("No Active Filter Available");
 		}
-		element.click();
+		
 		
 		
 	}
