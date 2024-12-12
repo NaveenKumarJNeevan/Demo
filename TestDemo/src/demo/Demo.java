@@ -66,9 +66,27 @@ public class Demo {
 		
 	}
 	
-	private static void deleteItem(List<String> items, WebDriver driver, int itemNumber) {
+	private static void deleteItem(List<String> items, WebDriver driver, int itemNumber) throws InterruptedException {
 		// TODO Auto-generated method stub
-		WebElement element = driver.findElement(By.xpath(deleteButton.replaceAll("1", Integer.toString(itemNumber))));
+		
+		String Xpath = "/html/body/app-root/section/app-todo-list/main/ul/app-todo-item[1]/li/div";
+		Xpath.replace("1", Integer.toString(itemNumber));
+		WebElement element = driver.findElement(By.xpath(Xpath));
+		
+		//Instantiating Actions class
+		Actions actions = new Actions(driver);
+
+		//Hovering on main menu
+		actions.moveToElement(element);
+
+		// Locating the element from Sub Menu
+		WebElement subMenu = driver.findElement(By.xpath(deleteButton.replace("1",Integer.toString(itemNumber))));
+
+		//To mouseover on sub menu
+		actions.moveToElement(subMenu);
+
+		//build()- used to compile all the actions into a single step 
+		actions.click().build().perform();
 		element.click();
 		
 		List<String> updatedItem = items;
@@ -149,11 +167,12 @@ public class Demo {
         
         markItemCompleted(items, driver, 2);
         
-        //deleteItem(items, driver, 3);
-        
-        VerifyFilters(items, driver, "active");
+        deleteItem(items, driver, 3);
+        System.out.println("Test");
         VerifyFilters(items, driver, "completed");
-
+        VerifyFilters(items, driver, "active");
+        
+        
 
         driver.wait(3000);
         driver.close();
